@@ -31,8 +31,24 @@ class PenjualanController extends Controller
             'pelanggan_id' => 'required|exists:pelanggans,id',
         ]);
 
-        Penjualan::create($request->all());
-        return redirect()->route('penjualan.index')->with('success', 'Penjualan berhasil ditambahkan');
+        // 🎲 Buat diskon acak 0-100%
+        $diskon = rand(0, 100);
+        $totalAwal = $request->total_harga;
+        $hargaSetelahDiskon = $totalAwal - ($totalAwal * $diskon / 100);
+
+        // ✅ Simpan penjualan ke database
+        $penjualan = Penjualan::create([
+            'user_id' => $request->user_id,
+            'tanggal_penjualan' => $request->tanggal_penjualan,
+            'total_harga' => $hargaSetelahDiskon,
+            'pelanggan_id' => $request->pelanggan_id,
+        ]);
+
+        // 🔄 Redirect kembali ke halaman create + tampilkan struk
+        return redirect()->route('penjualan.create')
+            ->with('success', 'Penjualan berhasil ditambahkan.')
+            ->with('penjualan', $penjualan)
+            ->with('diskon', $diskon);
     }
 
     public function show(Penjualan $penjualan)
@@ -57,7 +73,8 @@ class PenjualanController extends Controller
         ]);
 
         $penjualan->update($request->all());
-        return redirect()->route('penjualan.index')->with('success', 'Penjualan berhasil ditambahkan');
+
+        return redirect()->route('penjualan.index')->with('success', 'Penjualan berhasil diperbarui');
     }
 
     public function destroy(Penjualan $penjualan)

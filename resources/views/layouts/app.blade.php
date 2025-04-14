@@ -19,26 +19,70 @@
 <body class="bg-gray-100 font-sans antialiased">
     <div class="flex min-h-screen">
 
-        {{-- Sidebar --}}
-        <aside class="w-64 bg-white shadow-md p-6">
-            <h2 class="text-lg font-semibold mb-4">Admin Panel</h2>
-            <nav class="space-y-2">
-                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded hover:bg-gray-200">🏠 Dashboard</a>
-                <a href="{{ route('user.index') }}" class="block px-3 py-2 rounded hover:bg-gray-200">Karyawan</a>
-                <a href="{{ route('pelanggan.index') }}" class="block px-3 py-2 rounded hover:bg-gray-200">🛍️ Pelanggan</a>
-                <a href="{{ route('produk.index') }}" class="block px-3 py-2 rounded hover:bg-gray-200">Stok Barang</a>
-                <a href="{{ route('penjualan.index') }}" class="block px-3 py-2 rounded hover:bg-gray-200">💰 Penjualan</a>
-                <a href="{{ route('detailpenjualan.index') }}" class="block px-3 py-2 rounded hover:bg-gray-200">📊 Detail Penjualan</a>
+        {{-- Tambahkan ini di layout utama bagian <head> --}}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+</style>
 
-                {{-- Logout --}}
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full text-left px-3 py-2 mt-4 rounded bg-red-500 text-white hover:bg-red-600">
-                        🚪 Logout
-                    </button>
-                </form>
-            </nav>
-        </aside>
+{{-- Sidebar --}}
+<aside class="w-64 bg-white shadow-lg p-6 rounded-xl h-screen">
+    <h2 class="text-xl font-bold text-gray-700 mb-6 border-b pb-2">Menu</h2>
+
+    @php
+        $routeName = Route::currentRouteName();
+    @endphp
+
+    <nav class="space-y-3">
+        <a href="{{ route('dashboard') }}"
+           class="block px-4 py-2 rounded-md font-medium transition
+           {{ $routeName === 'dashboard' ? 'bg-gray-100 text-black font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+           Dashboard
+        </a>
+
+        <a href="{{ route('user.index') }}"
+           class="block px-4 py-2 rounded-md font-medium transition
+           {{ $routeName === 'user.index' ? 'bg-gray-100 text-black font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+           Kelola Petugas
+        </a>
+
+        <a href="{{ route('pelanggan.index') }}"
+           class="block px-4 py-2 rounded-md font-medium transition
+           {{ $routeName === 'pelanggan.index' ? 'bg-gray-100 text-black font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+           Pendataan Pelanggan
+        </a>
+
+        <a href="{{ route('produk.index') }}"
+           class="block px-4 py-2 rounded-md font-medium transition
+           {{ $routeName === 'produk.index' ? 'bg-gray-100 text-black font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+           Stok Barang
+        </a>
+
+        <a href="{{ route('penjualan.index') }}"
+           class="block px-4 py-2 rounded-md font-medium transition
+           {{ $routeName === 'penjualan.index' ? 'bg-gray-100 text-black font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+           Penjualan
+        </a>
+
+        <a href="{{ route('detailpenjualan.index') }}"
+           class="block px-4 py-2 rounded-md font-medium transition
+           {{ $routeName === 'detailpenjualan.index' ? 'bg-gray-100 text-black font-semibold' : 'text-gray-700 hover:bg-gray-100' }}">
+           Laporan Penjualan
+        </a>
+    </nav>
+
+    {{-- Logout --}}
+    <form method="POST" action="{{ route('logout') }}" class="pt-4 border-t mt-6">
+        @csrf
+        <button type="submit"
+                class="w-full text-left px-4 py-2 rounded-md bg-red-500 text-white font-semibold hover:bg-red-600 transition">
+            🚪 Logout
+        </button>
+    </form>
+</aside>
+
 
         {{-- Konten Utama --}}
         <main class="flex-1 p-6 bg-gray-100">

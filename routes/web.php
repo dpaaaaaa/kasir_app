@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
 
     // 🔹 Dashboard Petugas
     Route::get('/userdashboard', [DashboardPetugasController::class, 'index'])->name('userdashboard');
+    
 
     // 🔹 CRUD untuk Admin (tidak pakai prefix)
     Route::resource('admin/user', UserController::class);

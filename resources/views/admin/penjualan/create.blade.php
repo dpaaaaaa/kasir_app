@@ -1,9 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
+<div class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg relative">
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">➕ Tambah Penjualan</h2>
 
+    @if(session('success'))
+        <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- FORM INPUT --}}
     <form action="{{ route('penjualan.store') }}" method="POST">
         @csrf
 
@@ -56,5 +63,35 @@
             </button>
         </div>
     </form>
+
+    {{-- MODAL STRUK --}}
+    @if(session('penjualan'))
+        @php
+            $diskon = session('diskon') ?? 0;
+            $totalAwal = session('penjualan')->total_harga / (1 - ($diskon / 100));
+        @endphp
+
+        <div id="modal-struk" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded shadow-lg w-[350px] relative">
+                <h3 class="text-lg font-bold text-center mb-4 border-b pb-2">🧾 Struk Penjualan</h3>
+
+                <div class="text-sm text-gray-700 space-y-1 font-mono">
+                    <p><strong>ID Penjualan:</strong> {{ session('penjualan')->id }}</p>
+                    <p><strong>User ID:</strong> {{ session('penjualan')->user_id }}</p>
+                    <p><strong>Tanggal:</strong> {{ session('penjualan')->tanggal_penjualan }}</p>
+                    <p><strong>Total Awal:</strong> Rp {{ number_format($totalAwal, 2, ',', '.') }}</p>
+                    <p><strong>Diskon:</strong> {{ $diskon }}%</p>
+                    <p><strong>Total Bayar:</strong> Rp {{ number_format(session('penjualan')->total_harga, 2, ',', '.') }}</p>
+                    <p><strong>Pelanggan ID:</strong> {{ session('penjualan')->pelanggan_id }}</p>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <a href="{{ route('penjualan.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                        ✔ Selesai
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
 @endsection

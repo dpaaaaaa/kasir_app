@@ -31,9 +31,9 @@ class AuthenticatedSessionController extends Controller
         $user = $request->user();
 
         // Cek role user dan arahkan ke dashboard masing-masing
-        if ($user->hasRole('Admin')) {
+        if ($user->hasRole('admin')) {
             return redirect()->route('dashboard');
-        } elseif ($user->hasRole('Petugas')) {
+        } elseif ($user->hasRole('petugas')) {
             return redirect()->route('userdashboard');
         }
 
